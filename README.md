@@ -13,4 +13,4 @@ Create database:
 create database etherbase;
 
 Grant all privileges to user for that database:
-grant all privileges on database things to tester;
+grant all privileges on database etherbase to tester;
