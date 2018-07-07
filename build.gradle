@@ -9,13 +9,16 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
-    baseName = 'gs-spring-boot'
+    baseName = 'crypto-collector'
     version =  '0.1.0'
+}
+
+springBoot {
+    executable = true
 }
 
 repositories {
@@ -37,6 +40,7 @@ dependencies {
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
     compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
 
     testCompile("junit:junit")
     testCompile("org.springframework.boot:spring-boot-starter-test")

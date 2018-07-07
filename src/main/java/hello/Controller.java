@@ -1,5 +1,7 @@
 package hello;
 
+import static hello.ApiController.BASE_URI;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -16,17 +18,15 @@ import java.time.Instant;
 @RestController
 public class Controller {
 
-    public static final String baseUri = "https://api.gdax.com";
-
     @Autowired
-    private ApiAuthentication apiAuthentication;
+    private ApiController apiAuthentication;
 
     @RequestMapping("/accounts")
     public HttpResponse getAccounts() throws Exception{
         String url = "/accounts";
         String cbAccessSign = generateSignature(url, "GET", "");
 
-        GetRequest httpReq = Unirest.get(baseUri + url)
+        GetRequest httpReq = Unirest.get(BASE_URI + url)
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")
                 .header("CB-ACCESS-KEY", apiAuthentication.getApiKey())
