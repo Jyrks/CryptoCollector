@@ -7,7 +7,7 @@ Just adding the dependency will cause Flyway to migrate on startup(Also requires
 
 Creating database:
 Log into database as user postgres(root user):
-sudo -u postgres psql   (different in Docker - psql -U postgres)
+psql -h localhost -p 5574 -U postgres
 
 Create new Database user:
 create user tester with password 'pass';
@@ -26,3 +26,9 @@ docker cp /home/jyrks/database_dump etherdb:/database_dump
 
 Create database from dump
 psql -U postgres etherbase < database_dump
+
+Create jar:
+gradle clean assemble
+
+Activate jar:
+java -jar crypto-collector-0.1.0.jar

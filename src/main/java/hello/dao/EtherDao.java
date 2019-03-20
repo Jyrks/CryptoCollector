@@ -31,8 +31,8 @@ public class EtherDao {
     }
 
     public Double getLastHourPrice() {
-        return jdbcTemplate.queryForObject("select price from ether where import_timestamp > ? order by id asc limit 1", Double.class,
-                new Date(System.currentTimeMillis() - 3600 * 1000));
+        return jdbcTemplate.queryForObject("select avg(price) from ether where import_timestamp > ? and import_timestamp < ?", Double.class,
+                new Date(System.currentTimeMillis() - 3600 * 1000 - 10800 * 1000), new Date(System.currentTimeMillis() - 3600 * 1000 - 9000 * 1000));
     }
 
     public Double getLastPrice() {

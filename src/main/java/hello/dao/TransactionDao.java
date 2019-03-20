@@ -20,6 +20,7 @@ public class TransactionDao {
     }
 
     public void insert(Transaction t) {
-        jdbcTemplate.update("insert into transaction (price, cost, amount, type, date) values (?,?,?,?)", t.getPrice(), t.getCost(), t.getAmount(), t.getType(), t.getTimestamp());
+        jdbcTemplate.update("insert into transaction (price, cost, amount, type, timestamp, eur_balance, eth_balance) values (?,?,?,?,?,?,?)",
+                t.getPrice(), t.getCost(), t.getAmount(), t.getType(), t.getTimestamp(), t.getEurBalance(), t.getEthBalance());
     }
 }

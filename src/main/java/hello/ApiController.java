@@ -1,5 +1,6 @@
 package hello;
 
+import java.io.IOException;
 import java.time.Instant;
 
 import javax.crypto.Mac;
@@ -9,8 +10,10 @@ import javax.management.RuntimeErrorException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
@@ -36,6 +39,28 @@ public class ApiController {
     private static final Gson GSON = new Gson();
 
     public HttpResponse doGetRequest(String url) {
+
+        Unirest.setObjectMapper(new ObjectMapper() {
+            private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
+                    = new com.fasterxml.jackson.databind.ObjectMapper();
+
+            public <T> T readValue(String value, Class<T> valueType) {
+                try {
+                    return jacksonObjectMapper.readValue(value, valueType);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            public String writeValue(Object value) {
+                try {
+                    return jacksonObjectMapper.writeValueAsString(value);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         String cbAccessSign = generateSignature(url, "GET", "");
 
         BaseRequest httpReq = Unirest.get(BASE_URI + url)
@@ -83,7 +108,8 @@ public class ApiController {
         try {
             HttpResponse response = httpReq.asJson();
             if (response.getStatus() != 200) {
-                log.error("Failed response with status: " + response.getStatus() + ". Message: " + response.getBody());
+                log.error(httpReq.getHttpRequest().getUrl() + " failed with status: " + response.getStatus() + ". Message: " + response.getBody());
+                throw new RuntimeErrorException(new Error(), "Failed to query");
             }
             return response;
         } catch (UnirestException e) {

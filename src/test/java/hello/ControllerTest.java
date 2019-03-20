@@ -4,6 +4,7 @@ import com.mashape.unirest.http.HttpResponse;
 
 import hello.dao.EtherDao;
 import hello.dao.TransactionDao;
+import hello.model.Balance;
 import hello.model.PriceAnalysis;
 import hello.model.PriceAtTime;
 import hello.model.Transaction;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -81,12 +83,6 @@ public class ControllerTest {
     }
 
     @Test
-    public void testAccountsController() throws Exception {
-        HttpResponse response = controller.getAccounts();
-        System.out.println("");
-    }
-
-    @Test
     public void doEtherSellOrder() {
         HttpResponse response = ordersService.doEtherSellOrder(1000.0, 0.1);
         System.out.println("");
@@ -112,6 +108,18 @@ public class ControllerTest {
             status = ordersService.cancelOrders().getStatus();
             System.out.println(status);
         }
+        System.out.println("");
+    }
+
+    @Test
+    public void getFills() {
+        HttpResponse response = ordersService.getFills();
+        System.out.println("");
+    }
+
+    @Test
+    public void getBalances() {
+        Map<String, Balance> balances = accountService.getBalances();
         System.out.println("");
     }
 

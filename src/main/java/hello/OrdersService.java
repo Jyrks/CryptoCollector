@@ -54,4 +54,8 @@ public class OrdersService {
     public HttpResponse cancelOrders() {
         return apiController.doDeleteRequest("/orders");
     }
+
+    public HttpResponse getFills() {
+        return apiController.doGetRequest("/fills");
+    }
 }

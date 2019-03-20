@@ -15,4 +15,6 @@ public class Transaction {
     private Double amount;
     private String type;
     private Date timestamp;
+    private Double eurBalance;
+    private Double ethBalance;
 }
